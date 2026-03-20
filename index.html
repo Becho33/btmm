@@ -54,7 +54,7 @@
                 <a class="nav-item responsive-contact" href="mailto:echopimpisan@gmail.com" title="Email"><i class="far fa-envelope"></i> Email Enquiry</i></a>
                 <a class="nav-item responsive-contact" href="tel:+44  7442972166" title="Phone"><i class="fas fa-phone"></i> +44  7442972166</a>
             </div>
-            <button onclick="window.location.href='./prices.html'" class="menu-btn">Make a Booking</button>
+            <button onclick="window.open('https://api.whatsapp.com/send?phone=447442972166&text=Hello%2C%20can%20you%20tell%20me%20more%20about%20your%20massage%20please%3F', '_blank')" class="menu-btn">Make a Booking</button>
             <i class="fas nav-item menu-options fa-seedling menu-seedling"></i>
         </div>
     </div>
@@ -105,7 +105,7 @@
                 <a class="nav-item nav-contact" href="" title="Email"><i class="far fa-envelope"></i> Email Enquiry</i></a>
                 <a class="nav-item nav-contact" href="tel:+44  7442972166" title="Phone"><i class="fas fa-phone"></i> +44744972166</a>
             </div>
-            <button onclick="window.location.href='./prices.html'" class="nav-booking-btn">Make a Booking</button>
+            <button onclick="window.open('https://api.whatsapp.com/send?phone=447442972166&text=Hello%2C%20can%20you%20tell%20me%20more%20about%20your%20massage%20please%3F', '_blank')" class="nav-booking-btn">Make a Booking</button>
         </nav>
         <div class="header">
             <!-- logo svg -->
@@ -212,12 +212,12 @@
         </div>
 
         <div class="booking">
-            <button onclick="window.location.href='./prices.html'" class="booking-btn">Book Appointment</button> 
+            <button onclick="window.open('https://api.whatsapp.com/send?phone=447442972166&text=Hello%2C%20can%20you%20tell%20me%20more%20about%20your%20massage%20please%3F', '_blank')" class="booking-btn">Book Appointment</button> 
         </div>  
     </main>
     <footer>
         <h2 class="title footer-title">book now or send a message to find out more</h2>
-        <a href="./prices.html" class="footer-text" title="Go To Contact Form"><i class="far fa-file-alt"></i> Go To Contact Form</a>
+    <a href="https://api.whatsapp.com/send?phone=447442972166&text=Hello%2C%20can%20you%20tell%20me%20more%20about%20your%20massage%20please%3F" target="_blank" rel="noopener noreferrer" class="footer-text" title="Go To Contact Form"><i class="far fa-file-alt"></i> Go To Contact Form</a>
         <a class="footer-text email" href="mailto: echopimpisan@gmail.com"href="" title="Email"><i class="far fa-envelope"></i> Email Enquiry</i></a>
         <a class="footer-text" href="tel:+44  7442972166" title="Phone"><i class="fas fa-phone"></i> +44744972166</a>
         <div class="wrapper">
@@ -235,11 +235,121 @@
         </div>
     </footer>
 <!-- Script -->
-    <script src="script.js"></script>
+        <script src="script.js"></script>
+
+<!-- BEGIN: Responsive Booking Pop-up -->
+<style>
+    /* Popup container */
+    #bk-popup {
+        --bk-bg: rgba(255,255,255,0.95);
+        --bk-accent: #2f7a4a;
+        --bk-accent-2: #7bbf6a;
+        --bk-text: #123524;
+        --bk-radius: 14px;
+        --bk-shadow: 0 14px 40px rgba(17,24,17,0.15);
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        width: 320px;
+        max-width: calc(100% - 40px);
+        background: var(--bk-bg);
+        color: var(--bk-text);
+        border-radius: var(--bk-radius);
+        box-shadow: var(--bk-shadow);
+        padding: 16px 16px 14px 16px;
+        z-index: 99999;
+        transform: translateY(18px) translateX(8px);
+        opacity: 0;
+        transition: transform 360ms cubic-bezier(.2,.9,.25,1), opacity 360ms ease;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        backdrop-filter: blur(4px);
+    }
+    #bk-popup.bk-hidden { opacity: 0; transform: translateY(24px) scale(.98); pointer-events: none; }
+    #bk-popup.bk-visible { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+
+    #bk-popup .bk-close {
+        position: absolute; top: 8px; right: 8px; width: 34px; height: 34px;
+        border-radius: 8px; border: none; background: transparent; color: var(--bk-text);
+        font-weight: 700; font-size: 20px; display: grid; place-items: center; cursor: pointer;
+    }
+    #bk-popup .bk-close:hover { background: rgba(0,0,0,0.06); }
+
+    #bk-popup h3 { margin: 0; font-size: 18px; font-weight: 700; line-height: 1.05; }
+
+    #bk-popup .bk-actions { display:flex; gap:10px; margin-top:6px; }
+    #bk-popup .bk-actions a { text-decoration:none; padding:10px 14px; border-radius:10px; font-weight:600; font-size:14px; }
+    #bk-popup .bk-primary { background: linear-gradient(180deg,var(--bk-accent-2),var(--bk-accent)); color:#fff; box-shadow:0 8px 22px rgba(47,122,74,0.18); }
+    #bk-popup .bk-secondary { background: transparent; color: var(--bk-accent); border:1px solid rgba(47,122,74,0.12); }
+
+    #bk-popup .bk-note { font-size:12px; color: rgba(0,0,0,0.6); }
+
+    @media (max-width:520px) {
+        #bk-popup { left: 12px; right: 12px; bottom: 14px; width: auto; padding: 12px; border-radius: 12px; }
+        #bk-popup .bk-actions { flex-direction: column; }
+        #bk-popup .bk-actions a { width:100%; }
+        #bk-popup h3 { font-size:16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) { #bk-popup { transition: none; } }
+</style>
+
+<div id="bk-popup" class="bk-hidden" aria-hidden="true" role="dialog" aria-label="Booking popup">
+    <button class="bk-close" aria-label="Close popup">×</button>
+    <h3>Step inside &amp; relax <span aria-hidden="true">🌿</span></h3>
+    <div class="bk-actions">
+        <a class="bk-primary" href="https://api.whatsapp.com/send?phone=447442972166&text=Hello%2C%20can%20you%20tell%20me%20more%20about%20your%20massage%20please%3F" target="_blank" rel="noopener noreferrer">Book Now</a>
+        <a class="bk-secondary" href="file:///home/edward/btmm-main/treatments.html">Explore Treatments</a>
+    </div>
+    <div class="bk-note">Tap Book Now to message us on WhatsApp.</div>
+</div>
+
+<script>
+(function(){
+    const popup = document.getElementById('bk-popup');
+    const closeBtn = popup.querySelector('.bk-close');
+    let lastScrollY = window.scrollY;
+    let hasScrolledDown = false;
+    let closedUntilNextScrollUp = false;
+    let ticking = false;
+    const SHOW_THRESHOLD = 12;
+    const DOWN_TRIGGER = 80;
+    let maxScrolledFromTop = 0;
+
+    function showPopup(){ popup.classList.remove('bk-hidden'); popup.classList.add('bk-visible'); popup.setAttribute('aria-hidden','false'); }
+    function hidePopup(){ popup.classList.remove('bk-visible'); popup.classList.add('bk-hidden'); popup.setAttribute('aria-hidden','true'); }
+
+    closeBtn.addEventListener('click', function(e){ e.preventDefault(); hidePopup(); closedUntilNextScrollUp = true; });
+
+    window.addEventListener('scroll', function(){ if(!ticking){ requestAnimationFrame(handleScroll); ticking = true; } }, { passive: true });
+
+    function handleScroll(){
+        const currentY = window.scrollY; const delta = currentY - lastScrollY;
+        if (currentY > maxScrolledFromTop) maxScrolledFromTop = currentY;
+        if (maxScrolledFromTop >= DOWN_TRIGGER) hasScrolledDown = true;
+
+        if (delta > SHOW_THRESHOLD) {
+            hidePopup(); hasScrolledDown = true;
+        } else if (lastScrollY - currentY > SHOW_THRESHOLD) {
+            if (!hasScrolledDown) {
+                // do nothing
+            } else {
+                if (closedUntilNextScrollUp) { closedUntilNextScrollUp = false; showPopup(); }
+                else { showPopup(); }
+            }
+        }
+        lastScrollY = currentY; ticking = false;
+    }
+
+    window.addEventListener('keydown', function(e){ if(e.key === 'Escape' && popup.classList.contains('bk-visible')){ hidePopup(); closedUntilNextScrollUp = true; } });
+    hidePopup();
+})();
+</script>
 
 <!-- Floating WhatsApp Widget -->
-<a href="https://wa.me/66820665860" class="whatsapp-float" target="_blank" title="Chat with us on WhatsApp">
-  <i class="fab fa-whatsapp"></i>
+<a href="https://wa.me/447442972166" class="whatsapp-float" target="_blank" title="Chat with us on WhatsApp">
+    <i class="fab fa-whatsapp"></i>
 </a>
 
 <!-- Font Awesome (for the WhatsApp icon, if not already included) -->
